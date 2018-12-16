@@ -401,7 +401,7 @@ Example::
                        (status-code nil)
                        (sync nil)
                        (response (make-request-response))
-		       (follow-redirect t)
+                       (follow-redirect t)
                        (unix-socket nil))
   "Send request to URL.
 
