@@ -401,6 +401,7 @@ Example::
                        (status-code nil)
                        (sync nil)
                        (response (make-request-response))
+		       (follow-redirect t)
                        (unix-socket nil))
   "Send request to URL.
 
@@ -896,20 +897,20 @@ Currently it is used only for testing.")
     (make-directory (file-name-directory (request--curl-cookie-jar)) t)))
 
 (cl-defun request--curl-command
-    (url &key type data headers timeout response files* unix-socket
+    (url &key type data headers timeout response files* follow-redirect unix-socket
          &allow-other-keys
          &aux
          (cookie-jar (convert-standard-filename
                       (expand-file-name (request--curl-cookie-jar)))))
   (append
    (list request-curl "--silent" "--include"
-         "--location"
          ;; FIXME: test automatic decompression
          "--compressed"
          ;; FIMXE: this way of using cookie might be problem when
          ;;        running multiple requests.
          "--cookie" cookie-jar "--cookie-jar" cookie-jar
          "--write-out" request--curl-write-out-template)
+   (when follow-redirect (list "--location"))
    request-curl-options
    (when unix-socket (list "--unix-socket" unix-socket))
    (cl-loop for (name filename path mime-type) in files*
