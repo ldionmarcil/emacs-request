@@ -571,6 +571,7 @@ and requests.request_ (Python).
                       (request--urlencode-alist params))))
   (setq settings (plist-put settings :url url))
   (setq settings (plist-put settings :response response))
+  (setq settings (plist-put settings :follow-redirect follow-redirect))
   (setf (request-response-settings response) settings)
   (setf (request-response-url      response) url)
   (setf (request-response--backend response) request-backend)
